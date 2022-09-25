@@ -35,6 +35,9 @@ compile: ./bin ${OBJ} ${SRC}
 bin/%.o: src/%.cc ${DEPS}
 	${CXX} -c $< ${CXXFLAGS} -o $@
 
+install:
+	sudo cp ${APP} /usr/bin/
+
 clean:
 	rm bin/*.o $(APP)
 
