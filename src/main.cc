@@ -101,6 +101,18 @@ int main() {
             }
             puts("ok");
         }
+        else if (Util::LowerString(splitted[0]) == "search") {
+            if (splitted.size() < 2) {
+                fprintf(stderr, "1 parameter required\n");
+                continue;
+            }
+            for (auto const& [key, val] : buffer) {
+                if (val.find(splitted[1]) != std::string::npos) {
+                    printf("  %i: %s\n", key, val.c_str());
+                }
+            }
+            puts("ok");
+        }
         else {
             fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());
         }

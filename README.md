@@ -28,3 +28,7 @@ saves the file buffer into a file
 - `open [file name]`
 
 loads the contents of a file into the file buffer
+
+- `search [string]`
+
+searches the file buffer for given string and shows you what line the results are on
