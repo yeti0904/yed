@@ -18,7 +18,6 @@ CXXFLAGS = \
 	-Wall \
 	-Wextra \
 	-pedantic \
-	-s \
 	-Wno-deprecated-declarations
 
 ifeq (${platform}, windows)
@@ -27,7 +26,7 @@ endif
 
 # rules
 compile: ./bin ${OBJ} ${SRC}
-	${CXX} -o ${APP} ${OBJ} ${CXXFLAGS}
+	${CXX} -s -o ${APP} ${OBJ} ${CXXFLAGS}
 
 ./bin:
 	mkdir -p bin
