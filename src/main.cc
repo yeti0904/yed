@@ -113,6 +113,18 @@ int main() {
             }
             puts("ok");
         }
+        else if (Util::LowerString(splitted[0]) == "copy") {
+            if (splitted.size() < 3) {
+                fprintf(stderr, "2 parameters required\n");
+                continue;
+            }
+            if (!Util::IsInteger(splitted[1]) || !Util::IsInteger(splitted[2])) {
+                fprintf(stderr, "parameters must be integers\n");
+                continue;
+            }
+            buffer[std::stoi(splitted[2])] = buffer[std::stoi(splitted[1])];
+            puts("ok");
+        }
         else {
             fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());
         }
