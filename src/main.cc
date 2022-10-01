@@ -5,6 +5,7 @@
 int main() {
     size_t                      lineDistance = 10;
     std::map <int, std::string> buffer;
+    std::string                 lastFileName;
 
     while (true) {
         std::string input;
@@ -72,10 +73,25 @@ int main() {
             puts("ok");
         }
         else if (Util::LowerString(splitted[0]) == "save") {
-            if (splitted.size() < 2) {
+            if ((splitted.size() < 2) && lastFileName.empty()) {
                 fprintf(stderr, "1 parameter required\n");
                 continue;
             }
+            std::string fileName;
+            
+            if (splitted.size() < 2) {
+                printf("Save to %s? [Y/N] ", lastFileName.c_str());
+                if (tolower(getchar()) != 'y') {
+                    puts("abort");
+                    continue;
+                }
+                fileName = lastFileName;
+            }
+            else {
+                fileName     = splitted[1];
+                lastFileName = fileName;
+            }
+            
             std::string fileContents;
             for (auto const& [key, val] : buffer) {
                 (void) key;
@@ -83,7 +99,7 @@ int main() {
             }
             fileContents.erase(fileContents.length() - 1);
 
-            FS::File::Write(splitted[1], fileContents);
+            FS::File::Write(fileName, fileContents);
             puts("ok");
         }
         else if (Util::LowerString(splitted[0]) == "open") {
@@ -91,6 +107,8 @@ int main() {
                 fprintf(stderr, "1 parameter required\n");
                 continue;
             }
+            lastFileName = splitted[1];
+            
             auto   lines = FS::File::ReadIntoVector(splitted[1]);
             size_t key   = lineDistance;
             buffer.clear();

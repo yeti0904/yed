@@ -8,7 +8,7 @@ APP = ./bin/yed
 
 # compiler related
 ifeq (${platform}, windows)
-CXX = x86_64-w64-mingw32-g++
+CXX = i686-w64-mingw32-g++
 else
 CXX = clang++
 endif
