@@ -52,6 +52,7 @@ int main(int argc, char** argv) {
             
                 key += lineDistance;
             }
+            lastFileName = argv[i];
             printf("opened %s\n", argv[i]);
         }
     }
