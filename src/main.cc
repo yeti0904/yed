@@ -2,10 +2,59 @@
 #include "fs.hh"
 #include "util.hh"
 
-int main() {
+#define APP_NAME    "yed"
+#define APP_AUTHOR  "yeti0904"
+#define APP_VERSION "1.0.0"
+
+#define APP_HELP \
+    "COMMAND PARAMETERS\n" \
+    "    --help / -h : show this menu\n" \
+    "    --version / -v : show app version\n" \
+    "USING THE APP\n" \
+    "line edit with: (line number) (text)\n" \
+    "commands:\n" \
+    "    exit : exit the app\n" \
+    "    list {start} {end} : show lines starting from {start} and ending at {end}\n" \
+    "                         if these parameters are not given then it will display the entire file\n" \
+    "    linedistance [distance] : sets the distance between line numbers when opening files\n" \
+    "    save {file name} : saves the file buffer into a file, if file name is not given then it will save the contents to the last opened/saved file\n" \
+    "    open [file name] : loads the contents of a file into the file buffer\n" \
+    "    search [string] : searches the file buffer for given string and shows you what line the results are on\n" \
+    "    copy [source] [destination] : copies the contents of line source to line destination\n"
+
+int main(int argc, char** argv) {
     size_t                      lineDistance = 10;
     std::map <int, std::string> buffer;
     std::string                 lastFileName;
+
+    for (int i = 1; i < argc; ++i) {
+        if (argv[i][0] == '-') {
+            std::string arg = argv[i];
+            if ((arg == "--help") || (arg == "-h")) {
+                printf("%s [file name] {parameters}\n%s\n", argv[0], APP_HELP);
+                return 0;
+            }
+            else if ((arg == "--version") || (arg == "-v")) {
+                printf("%s %s\nmade by %s\n", APP_NAME, APP_VERSION, APP_AUTHOR);
+                return 0;
+            }
+            else {
+                fprintf(stderr, "unrecognised argument: %s\n", argv[i]);
+                return 1;
+            }
+        }
+        else {
+            auto   lines = FS::File::ReadIntoVector(argv[1]);
+            size_t key   = lineDistance;
+            buffer.clear();
+            for (auto& line : lines) {
+                buffer[key] = line;
+            
+                key += lineDistance;
+            }
+            printf("opened %s\n", argv[i]);
+        }
+    }
 
     while (true) {
         std::string input;

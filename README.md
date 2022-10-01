@@ -21,9 +21,11 @@ if these parameters are not given then it will display the entire file
 
 sets the distance between line numbers when opening files
 
-- `save [file name]`
+- `save {file name}`
 
 saves the file buffer into a file
+
+if file name is not given then it will save the contents to the last opened/saved file
 
 - `open [file name]`
 
