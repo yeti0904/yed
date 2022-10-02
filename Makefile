@@ -12,7 +12,7 @@ CXX = i686-w64-mingw32-g++
 else
 CXX = clang++
 endif
-CXXVER = c++17
+CXXVER = c++11
 CXXFLAGS = \
 	-std=${CXXVER} \
 	-Wall \

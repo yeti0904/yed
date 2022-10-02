@@ -81,9 +81,8 @@ int main(int argc, char** argv) {
         }
         else if (Util::LowerString(splitted[0]) == "list") {
             std::vector <int> keys;
-            for (auto [key, val] : buffer) {
-                (void) val;
-                keys.push_back(key);
+            for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+                keys.push_back(it->first);
             }
 
             if (splitted.size() < 3) {
@@ -143,9 +142,8 @@ int main(int argc, char** argv) {
             }
             
             std::string fileContents;
-            for (auto const& [key, val] : buffer) {
-                (void) key;
-                fileContents += val + '\n';
+            for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+                fileContents += it->second + '\n';
             }
             fileContents.erase(fileContents.length() - 1);
 
@@ -174,9 +172,9 @@ int main(int argc, char** argv) {
                 fprintf(stderr, "1 parameter required\n");
                 continue;
             }
-            for (auto const& [key, val] : buffer) {
-                if (val.find(splitted[1]) != std::string::npos) {
-                    printf("  %i: %s\n", key, val.c_str());
+            for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+                if (it->second.find(splitted[1]) != std::string::npos) {
+                    printf("  %i: %s\n", it->first, it->second.c_str());
                 }
             }
             puts("ok");
