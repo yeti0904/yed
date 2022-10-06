@@ -3,7 +3,7 @@
 
 #define APP_NAME    "yed"
 #define APP_AUTHOR  "yeti0904"
-#define APP_VERSION "1.0.0"
+#define APP_VERSION "1.1.0"
 
 #define APP_HELP \
     "COMMAND PARAMETERS\n" \
