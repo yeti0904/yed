@@ -36,7 +36,8 @@ int main(int argc, char** argv) {
     	std::make_pair("o",  "open"),
     	std::make_pair("sr", "search"),
     	std::make_pair("c",  "copy"),
-    	std::make_pair("a",  "alias")
+    	std::make_pair("a",  "alias"),
+    	std::make_pair("sz", "size")
     };
 
     for (int i = 1; i < argc; ++i) {
@@ -87,8 +88,8 @@ int main(int argc, char** argv) {
 
         if (Util::IsInteger(splitted[0])) {
             auto args = Util::SplitString(input, ' ', 2);
-            if (args.empty()) {
-                buffer[std::stol(splitted[0])] = "";
+            if (args.size() == 1) {
+                buffer.erase(std::stoi(splitted[0]));
                 continue;
             }
 
@@ -217,6 +218,52 @@ int main(int argc, char** argv) {
 			}
         
         	aliases.push_back(std::make_pair(splitted[1], splitted[2]));
+        	puts("ok");
+        }
+        else if (Util::LowerString(splitted[0]) == "movelines") {
+        	puts("unfinished command");
+        	continue;
+        	if (splitted.size() < 4) {
+        		fprintf(stderr, "3 parameters required\n");
+        		continue;
+        	}
+        	if (
+        		(!Util::IsInteger(splitted[1]) && (splitted[1] != "*")) ||
+        		(!Util::IsInteger(splitted[2]) && (splitted[2] != "*")) ||
+        		(!Util::IsInteger(splitted[3]))
+        	) {
+        		fprintf(stderr, "parameters must be integers\n");
+        		continue;
+        	}
+
+        	int start, end;
+        	start = splitted[1] == "*"? 0 : std::stoi(splitted[1]);
+        	end   = splitted[2] == "*"? buffer.end()->first : std::stoi(splitted[2]);
+
+        	if (end < start) {
+        		fprintf(stderr, "end line must be after start line\n");
+        		continue;
+        	}
+
+        	int moveBy = std::stoi(splitted[3]);
+
+            for (auto it = buffer.end(); it != buffer.begin(); --it) {
+                if ((it->first >= start) && (it->first <= end)) {
+                	buffer[it->first + moveBy] = it->second;
+                	buffer.erase(it->first);
+                }
+            }
+        }
+        else if (Util::LowerString(splitted[0]) == "size") {
+        	size_t size = 0;
+        	for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+        		size += it->second.size();
+        	}
+        	printf("%llu\n", (long long int) size);
+        	puts("ok");
+        }
+        else if (Util::LowerString(splitted[0]) == "clear") {
+        	buffer.clear();
         	puts("ok");
         }
         else {

@@ -19,6 +19,8 @@ ifeq (${platform}, windows)
 CXX = i686-w64-mingw32-g++
 else ifeq (${platform}, dos)
 CXX = i586-pc-msdosdjgpp-g++
+else ifeq (${debug}, on)
+CXX = g++
 else
 CXX = clang++
 endif
@@ -30,13 +32,17 @@ CXXFLAGS = \
 	-pedantic \
 	-Wno-deprecated-declarations
 
+ifeq (${debug}, on)
+CXXFLAGS += -g
+endif
+
 ifeq (${platform}, windows)
 CXXFLAGS += -static -static-libgcc -static-libstdc++
 endif
 
 # rules
 compile: ./bin ${OBJ} ${SRC}
-	${CXX} -s -o ${APP} ${OBJ} ${CXXFLAGS}
+	${CXX} -o ${APP} ${OBJ} ${CXXFLAGS}
 
 ./bin:
 	mkdir -p bin
