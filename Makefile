@@ -4,11 +4,21 @@ DEPS  = ${wildcard headers/*}
 DEPS += ${wildcard src/*.hh}
 OBJ   = ${addsuffix .o,${subst src/,bin/,${basename ${SRC}}}}
 
+ifeq (${platform}, window)
+APP = ./bin/yed.exe
+else ifeq (${platform}, dos)
+APP = ./bin/yed.com
+else
 APP = ./bin/yed
+endif
+
+DOS_SYS_INCLUDE = ~/app/
 
 # compiler related
 ifeq (${platform}, windows)
 CXX = i686-w64-mingw32-g++
+else ifeq (${platform}, dos)
+CXX = i586-pc-msdosdjgpp-g++
 else
 CXX = clang++
 endif

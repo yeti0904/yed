@@ -26,6 +26,16 @@ int main(int argc, char** argv) {
     size_t                      lineDistance = 10;
     std::map <int, std::string> buffer;
     std::string                 lastFileName;
+    
+    std::vector <std::pair <std::string, std::string>> aliases = {
+    	std::make_pair("x",  "exit"),
+    	std::make_pair("l",  "list"),
+    	std::make_pair("ld", "linedistance"),
+    	std::make_pair("s",  "save"),
+    	std::make_pair("o",  "open"),
+    	std::make_pair("s",  "search"),
+    	std::make_pair("c",  "copy")
+    };
 
     for (int i = 1; i < argc; ++i) {
         if (argv[i][0] == '-') {
@@ -64,6 +74,13 @@ int main(int argc, char** argv) {
         auto splitted = Util::SplitString(input, ' ');
         if (splitted.empty()) {
             continue;
+        }
+
+        for (auto& pair : aliases) {
+        	if (splitted[0] == pair.first) {
+        		splitted[0] = pair.second;
+        		break;
+        	}
         }
 
         if (Util::IsInteger(splitted[0])) {
@@ -190,6 +207,15 @@ int main(int argc, char** argv) {
             }
             buffer[std::stoi(splitted[2])] = buffer[std::stoi(splitted[1])];
             puts("ok");
+        }
+        else if (Util::LowerString(splitted[0]) == "alias") {
+			if (splitted.size() < 3) {
+				fprintf(stderr, "2 parameters required\n");
+				continue;
+			}
+        
+        	aliases.push_back(std::make_pair(splitted[1], splitted[2]));
+        	puts("ok");
         }
         else {
             fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());
