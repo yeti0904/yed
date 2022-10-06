@@ -6,6 +6,9 @@ to edit 1 line, do `(line number) (text)`
 
 for any other operations, use a command
 
+## running shell commands
+type `$[shell input]` and it will execute shell input
+
 ## commands
 - `exit` (`x`)
 

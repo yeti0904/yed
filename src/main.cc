@@ -81,6 +81,12 @@ int main(int argc, char** argv) {
         std::string input;
         std::getline(std::cin, input, '\n');
 
+        if (input[0] == '$') {
+        	system(input.substr(1).c_str());
+        	puts("ok");
+        	continue;
+        }
+
         auto splitted = Util::SplitString(input, ' ');
         if (splitted.empty()) {
             continue;

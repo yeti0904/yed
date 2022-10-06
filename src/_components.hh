@@ -3,6 +3,7 @@
 
 // C standard libraries
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 
 // C++ standard libraries
