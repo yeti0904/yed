@@ -62,3 +62,7 @@ rl 20
 2
 ok
 ```
+
+- `move [old] [new]` (`mv`)
+
+moves line old into line new and then deletes line old

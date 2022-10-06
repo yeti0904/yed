@@ -21,7 +21,11 @@
     "    open [file name] : loads the contents of a file into the file buffer\n" \
     "    search [string] : searches the file buffer for given string and shows you what line the results are on\n" \
     "    copy [source] [destination] : copies the contents of line source to line destination\n" \
-    "    alias [alias] [command] : creates an alias of command, so you can type the alias and it will execute command\n"
+    "    alias [alias] [command] : creates an alias of command, so you can type the alias and it will execute command\n" \
+    "    size : prints out the size of the file in bytes\n" \
+    "    clear : deletes all lines in the file buffer\n" \
+    "    realline : gets the real line number of a line in the file buffer\n" \
+    "    move [old] [new] : moves line [old] into line [new] and then deletes line [old]\n"
 
 int main(int argc, char** argv) {
     size_t                      lineDistance = 10;
@@ -39,7 +43,8 @@ int main(int argc, char** argv) {
     	std::make_pair("a",  "alias"),
     	std::make_pair("sz", "size"),
     	std::make_pair("cl", "clear"),
-    	std::make_pair("rl", "realline")
+    	std::make_pair("rl", "realline"),
+    	std::make_pair("mv", "move")
     };
 
     for (int i = 1; i < argc; ++i) {
@@ -292,6 +297,27 @@ int main(int argc, char** argv) {
 			if (buffer.count(line) == 0) {
 				fprintf(stderr, "line %i doesn't exist\n", line);
 			}
+        }
+        else if (Util::LowerString(splitted[0]) == "move") {
+        	if (splitted.size() < 3) {
+        		fprintf(stderr, "2 parameters required\n");
+        		continue;
+        	}
+        	if (
+        		(!Util::IsInteger(splitted[1])) ||
+        		(!Util::IsInteger(splitted[2]))
+        	) {
+        		fprintf(stderr, "parameters must be integers");
+        		continue;
+        	}
+
+        	int oldLine, newLine;
+        	oldLine = std::stoi(splitted[1]);
+        	newLine = std::stoi(splitted[2]);
+
+        	buffer[newLine] = buffer[oldLine];
+        	buffer.erase(oldLine);
+        	puts("ok");
         }
         else {
             fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());
