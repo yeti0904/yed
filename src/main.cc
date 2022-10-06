@@ -20,7 +20,8 @@
     "    save {file name} : saves the file buffer into a file, if file name is not given then it will save the contents to the last opened/saved file\n" \
     "    open [file name] : loads the contents of a file into the file buffer\n" \
     "    search [string] : searches the file buffer for given string and shows you what line the results are on\n" \
-    "    copy [source] [destination] : copies the contents of line source to line destination\n"
+    "    copy [source] [destination] : copies the contents of line source to line destination\n" \
+    "    alias [alias] [command] : creates an alias of command, so you can type the alias and it will execute command\n"
 
 int main(int argc, char** argv) {
     size_t                      lineDistance = 10;
@@ -33,8 +34,9 @@ int main(int argc, char** argv) {
     	std::make_pair("ld", "linedistance"),
     	std::make_pair("s",  "save"),
     	std::make_pair("o",  "open"),
-    	std::make_pair("s",  "search"),
-    	std::make_pair("c",  "copy")
+    	std::make_pair("sr", "search"),
+    	std::make_pair("c",  "copy"),
+    	std::make_pair("a",  "alias")
     };
 
     for (int i = 1; i < argc; ++i) {

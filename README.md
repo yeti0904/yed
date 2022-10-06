@@ -38,3 +38,7 @@ searches the file buffer for given string and shows you what line the results ar
 - `copy [source] [destination]` (`c`)
 
 copies the contents of line source to line destination
+
+- `alias [alias] [command]` (`a`)
+
+creates an alias of command, so you can type the alias and it will execute command
