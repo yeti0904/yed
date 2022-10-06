@@ -37,7 +37,9 @@ int main(int argc, char** argv) {
     	std::make_pair("sr", "search"),
     	std::make_pair("c",  "copy"),
     	std::make_pair("a",  "alias"),
-    	std::make_pair("sz", "size")
+    	std::make_pair("sz", "size"),
+    	std::make_pair("cl", "clear"),
+    	std::make_pair("rl", "realline")
     };
 
     for (int i = 1; i < argc; ++i) {
@@ -265,6 +267,31 @@ int main(int argc, char** argv) {
         else if (Util::LowerString(splitted[0]) == "clear") {
         	buffer.clear();
         	puts("ok");
+        }
+        else if (Util::LowerString(splitted[0]) == "realline") {
+        	if (splitted.size() < 2) {
+        		fprintf(stderr, "1 parameter required\n");
+        		continue;
+        	}
+			if (!Util::IsInteger(splitted[1])) {
+				fprintf(stderr, "parameter must be integer\n");
+				continue;
+			}
+
+			int line = std::stoi(splitted[1]);
+			int i = 0;
+			for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+				++ i;
+				if (it->first == line) {
+					printf("%i\n", i);
+					puts("ok");
+					continue;
+				}
+			}
+
+			if (buffer.count(line) == 0) {
+				fprintf(stderr, "line %i doesn't exist\n", line);
+			}
         }
         else {
             fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());

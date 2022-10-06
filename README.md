@@ -46,3 +46,19 @@ creates an alias of command, so you can type the alias and it will execute comma
 - `size` (`sz`)
 
 prints out the size of the file in bytes
+
+- `clear` (`cl`)
+
+deletes all lines in the file buffer
+
+- `realline` (`rl`)
+
+gets the real line number of a line in the file buffer, example:
+
+```
+10 hi
+20 how are you
+rl 20
+2
+ok
+```
