@@ -11,6 +11,8 @@ namespace Util {
     std::string LowerString(std::string str);
     std::string GetConfigPath();
     std::string CorrectPath(std::string path);
+    bool        IsBool(std::string str);
+    bool        ToBool(std::string str);
 }
 
 #endif

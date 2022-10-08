@@ -26,6 +26,7 @@
     "    realline : gets the real line number of a line in the file buffer\n" \
     "    move [old] [new] : moves line [old] into line [new] and then deletes line [old]\n" \
     "    prompt [prompt] : sets the prompt to [prompt]\n" \
-    "    renumber : re-orders all lines so line numbers have an equal distance\n"
+    "    renumber : re-orders all lines so line numbers have an equal distance\n" \
+    "    ok {true/false} : toggles printing \"ok\" after a command runs successfully\n"
 
 #endif

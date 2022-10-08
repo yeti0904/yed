@@ -82,3 +82,7 @@ sets the prompt to prompt
 - `renumber` (`rn`)
 
 re-orders all lines so line numbers have an equal distance
+
+- `ok {true/false}`
+
+toggles printing "ok" after a command runs successfully

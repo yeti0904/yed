@@ -3,7 +3,8 @@
 
 Editor::Editor():
 	run(true),
-	lineDistance(10)
+	lineDistance(10),
+	showOk(false)
 {
 	aliases = {
     	std::make_pair("x",  "exit"),
@@ -82,12 +83,12 @@ void Editor::Init() {
 	for (auto& line : FS::File::ReadIntoVector(init)) {
 		Run(line);
 	}
+	showOk = true;
 }
 
 void Editor::Run(std::string input) {
 	if (input[0] == '$') {
 		system(input.substr(1).c_str());
-		puts("ok");
 		return;
 	}
 
@@ -113,7 +114,7 @@ void Editor::Run(std::string input) {
 	    buffer[std::stol(splitted[0])] = args[1];
 	}
 	else if (Util::LowerString(splitted[0]) == "exit") {
-	    puts("ok");
+	    Ok();
 	    run = false;
 	    return;
 	}
@@ -145,7 +146,7 @@ void Editor::Run(std::string input) {
 	            }
 	        }
 	    }
-	    puts("ok");
+	    Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "linedistance") {
 	    if (splitted.size() < 2) {
@@ -157,7 +158,7 @@ void Editor::Run(std::string input) {
 	        return;
 	    }
 	    lineDistance = std::stol(splitted[1]);
-	    puts("ok");
+	    Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "save") {
 	    if ((splitted.size() < 2) && lastFileName.empty()) {
@@ -187,7 +188,7 @@ void Editor::Run(std::string input) {
 	    fileContents.erase(fileContents.length() - 1);
 
 	    FS::File::Write(fileName, fileContents);
-	    puts("ok");
+	    Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "open") {
 	    if (splitted.size() < 2) {
@@ -204,7 +205,7 @@ void Editor::Run(std::string input) {
 	    
 	        key += lineDistance;
 	    }
-	    puts("ok");
+	    Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "search") {
 	    if (splitted.size() < 2) {
@@ -216,7 +217,7 @@ void Editor::Run(std::string input) {
 	            printf("  %i: %s\n", it->first, it->second.c_str());
 	        }
 	    }
-	    puts("ok");
+	    Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "copy") {
 	    if (splitted.size() < 3) {
@@ -228,7 +229,7 @@ void Editor::Run(std::string input) {
 	        return;
 	    }
 	    buffer[std::stoi(splitted[2])] = buffer[std::stoi(splitted[1])];
-	    puts("ok");
+	    Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "alias") {
 		if (splitted.size() < 3) {
@@ -237,7 +238,7 @@ void Editor::Run(std::string input) {
 		}
 
 		aliases.push_back(std::make_pair(splitted[1], splitted[2]));
-		puts("ok");
+		Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "movelines") {
 		puts("unfinished command");
@@ -279,11 +280,11 @@ void Editor::Run(std::string input) {
 			size += it->second.size();
 		}
 		printf("%llu\n", (long long int) size);
-		puts("ok");
+		Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "clear") {
 		buffer.clear();
-		puts("ok");
+		Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "realline") {
 		if (splitted.size() < 2) {
@@ -301,7 +302,7 @@ void Editor::Run(std::string input) {
 			++ i;
 			if (it->first == line) {
 				printf("%i\n", i);
-				puts("ok");
+				Ok();
 				return;
 			}
 		}
@@ -329,7 +330,7 @@ void Editor::Run(std::string input) {
 
 		buffer[newLine] = buffer[oldLine];
 		buffer.erase(oldLine);
-		puts("ok");
+		Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "prompt") {
 		if (splitted.size() < 2) {
@@ -338,7 +339,7 @@ void Editor::Run(std::string input) {
 		else {
 			prompt = splitted[1];
 		}
-		puts("ok");
+		Ok();
 	}
 	else if (Util::LowerString(splitted[0]) == "renumber") {
 		std::vector <std::string> lines;
@@ -354,9 +355,30 @@ void Editor::Run(std::string input) {
 			buffer[lineNumber] = line;
 		}
 
-		puts("ok");
+		Ok();
+	}
+	else if (Util::LowerString(splitted[0]) == "ok") {
+		if (splitted.size() < 2) {
+			showOk = !showOk;
+			puts(showOk? "true" : "false");
+		}
+		else {
+			if (Util::IsBool(splitted[1])) {
+				showOk = Util::ToBool(splitted[1]);
+				Ok();
+			}
+			else {
+				fprintf(stderr, "parameters must be booleans");
+			}
+		}
 	}
 	else {
 	    fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());
+	}
+}
+
+void Editor::Ok() {
+	if (showOk) {
+		puts("ok");
 	}
 }

@@ -90,3 +90,14 @@ std::string Util::CorrectPath(std::string path) {
 
 	return ret;
 }
+
+bool Util::IsBool(std::string str) {
+	return (
+		(str == "true") ||
+		(str == "false")
+	);
+}
+
+bool Util::ToBool(std::string str) {
+	return str == "true";
+}

@@ -13,6 +13,7 @@ class Editor {
 		    std::string                                        lastFileName;
 		    std::vector <std::pair <std::string, std::string>> aliases;
 		    std::string                                        prompt;
+		    bool                                               showOk;
 
 		    Editor();
 		    ~Editor();
@@ -20,6 +21,7 @@ class Editor {
 		    void CreateConfigFiles();
 		    void Init();
 		    void Run(std::string input);
+		    void Ok();
 };
 
 #endif
