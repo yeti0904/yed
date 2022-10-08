@@ -12,10 +12,13 @@ class Editor {
 		    std::map <int, std::string>                        buffer;
 		    std::string                                        lastFileName;
 		    std::vector <std::pair <std::string, std::string>> aliases;
+		    std::string                                        prompt;
 
 		    Editor();
 		    ~Editor();
 		    void HandleArguments(int argc, char** argv);
+		    void CreateConfigFiles();
+		    void Init();
 		    void Run(std::string input);
 };
 

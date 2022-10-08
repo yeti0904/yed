@@ -6,8 +6,13 @@ to edit 1 line, do `(line number) (text)`
 
 for any other operations, use a command
 
+## config
+config is done using init.yed, either in %appdata%/yed or ~/.config/yed
+
+it just contains yed commands
+
 ## running shell commands
-type `$[shell input]` and it will execute shell input
+type `$[shell input]` and it will execute shell input#
 
 ## commands
 - `exit` (`x`)
@@ -69,3 +74,11 @@ ok
 - `move [old] [new]` (`mv`)
 
 moves line old into line new and then deletes line old
+
+- `prompt [prompt]`
+
+sets the prompt to prompt
+
+- `renumber` (`rn`)
+
+re-orders all lines so line numbers have an equal distance

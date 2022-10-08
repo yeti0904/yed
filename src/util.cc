@@ -43,3 +43,50 @@ std::string Util::LowerString(std::string str) {
     }
     return ret;
 }
+
+std::string Util::GetConfigPath() {
+	char* ret;
+	#ifdef PLATFORM_WINDOWS
+		ret = getenv("APPDATA");
+		if (ret == nullptr) {
+			ret = getenv("programfiles");
+			if (ret == nullptr) {
+				return ".";
+			}
+			return ret;
+		}
+		return ret;
+	#else
+		ret = getenv("HOME");
+		if (ret == nullptr) {
+			return ".";
+		}
+		return std::string(ret) + "/.config";
+	#endif
+}
+
+std::string Util::CorrectPath(std::string path) {
+	std::string ret;
+	
+	for (auto& ch : path) {
+		#ifdef PLATFORM_WINDOWS
+			if (ch == '/') {
+				ret += '\\';
+				continue;
+			}
+		#endif
+		if (ret.empty()) {
+			ret += ch;
+			continue;
+		}
+		if ((ret.back() == '/') && (ch == '/')) {
+			continue;
+		}
+		if ((ret.empty() || (ret.back() == '\\')) && (ch == '/')) {
+			continue;
+		}
+		ret += ch;
+	}
+
+	return ret;
+}

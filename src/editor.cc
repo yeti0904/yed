@@ -17,7 +17,9 @@ Editor::Editor():
     	std::make_pair("sz", "size"),
     	std::make_pair("cl", "clear"),
     	std::make_pair("rl", "realline"),
-    	std::make_pair("mv", "move")
+    	std::make_pair("mv", "move"),
+    	std::make_pair("pr", "prompt"),
+    	std::make_pair("rn", "renumber")
 	};
 }
 
@@ -57,6 +59,25 @@ void Editor::HandleArguments(int argc, char** argv) {
             printf("opened %s\n", argv[i]);
         }
     }
+}
+
+void Editor::Init() {
+	// create files
+	std::string configPath = Util::CorrectPath(Util::GetConfigPath() + "/yed");
+
+	if (!FS::Directory::Exists(configPath)) {
+		FS::Directory::Create(configPath);
+	}
+	
+	std::string init = Util::CorrectPath(Util::GetConfigPath() + "/yed/init.yed");
+	if (!FS::File::Exists(init)) {
+		FS::File::Write(init, "");
+	}
+
+	// run init script
+	for (auto& line : FS::File::ReadIntoVector(init)) {
+		Run(line);
+	}
 }
 
 void Editor::Run(std::string input) {
@@ -143,6 +164,7 @@ void Editor::Run(std::string input) {
 	    
 	    if (splitted.size() < 2) {
 	        printf("Save to %s? [Y/N] ", lastFileName.c_str());
+	        fflush(stdout);
 	        if (tolower(getchar()) != 'y') {
 	            puts("abort");
 	            return;
@@ -303,6 +325,31 @@ void Editor::Run(std::string input) {
 
 		buffer[newLine] = buffer[oldLine];
 		buffer.erase(oldLine);
+		puts("ok");
+	}
+	else if (Util::LowerString(splitted[0]) == "prompt") {
+		if (splitted.size() < 2) {
+			prompt = "";
+		}
+		else {
+			prompt = splitted[1];
+		}
+		puts("ok");
+	}
+	else if (Util::LowerString(splitted[0]) == "renumber") {
+		std::vector <std::string> lines;
+		
+		for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+			lines.push_back(it->second);
+		}
+		
+		buffer.clear();
+		size_t lineNumber = 0;
+		for (auto& line : lines) {
+			lineNumber += lineDistance;
+			buffer[lineNumber] = line;
+		}
+
 		puts("ok");
 	}
 	else {

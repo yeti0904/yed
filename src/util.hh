@@ -9,6 +9,8 @@ namespace Util {
         std::string str, char splitter, ssize_t maxSplit = -1
     );
     std::string LowerString(std::string str);
+    std::string GetConfigPath();
+    std::string CorrectPath(std::string path);
 }
 
 #endif

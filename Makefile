@@ -24,20 +24,18 @@ CXX = g++
 else
 CXX = clang++
 endif
-CXXVER = c++11
+CXXVER = c++17
 CXXFLAGS = \
 	-std=${CXXVER} \
+	-g \
 	-Wall \
 	-Wextra \
 	-pedantic \
 	-Wno-deprecated-declarations
 
-ifeq (${debug}, on)
-CXXFLAGS += -g
-endif
 
 ifeq (${platform}, windows)
-CXXFLAGS += -static -static-libgcc -static-libstdc++
+CXXFLAGS += -static -static-libgcc -static-libstdc++ -D_WIN32_WINNT
 endif
 
 # rules
