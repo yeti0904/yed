@@ -63,6 +63,10 @@ void Editor::HandleArguments(int argc, char** argv) {
 
 void Editor::Init() {
 	// create files
+	if (!FS::Directory::Exists(Util::CorrectPath(Util::GetConfigPath()))) {
+		FS::Directory::Create(Util::CorrectPath(Util::GetConfigPath()));
+	}
+	
 	std::string configPath = Util::CorrectPath(Util::GetConfigPath() + "/yed");
 
 	if (!FS::Directory::Exists(configPath)) {
