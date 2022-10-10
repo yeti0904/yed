@@ -14,6 +14,7 @@ class Editor {
 		    std::vector <std::pair <std::string, std::string>> aliases;
 		    std::string                                        prompt;
 		    bool                                               showOk;
+		    int                                                tabSize;
 
 		    Editor();
 		    ~Editor();

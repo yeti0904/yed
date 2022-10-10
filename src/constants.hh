@@ -27,6 +27,7 @@
     "    move [old] [new] : moves line [old] into line [new] and then deletes line [old]\n" \
     "    prompt [prompt] : sets the prompt to [prompt]\n" \
     "    renumber : re-orders all lines so line numbers have an equal distance\n" \
-    "    ok {true/false} : toggles printing \"ok\" after a command runs successfully\n"
+    "    ok {true/false} : toggles printing \"ok\" after a command runs successfully\n" \
+    "    tabsize [size] : sets tab size to [size]\n"
 
 #endif

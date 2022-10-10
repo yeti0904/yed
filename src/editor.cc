@@ -4,7 +4,8 @@
 Editor::Editor():
 	run(true),
 	lineDistance(10),
-	showOk(false)
+	showOk(false),
+	tabSize(4)
 {
 	aliases = {
     	std::make_pair("x",  "exit"),
@@ -20,7 +21,8 @@ Editor::Editor():
     	std::make_pair("rl", "realline"),
     	std::make_pair("mv", "move"),
     	std::make_pair("pr", "prompt"),
-    	std::make_pair("rn", "renumber")
+    	std::make_pair("rn", "renumber"),
+    	std::make_pair("ts", "tabSize")
 	};
 }
 
@@ -126,7 +128,20 @@ void Editor::Run(std::string input) {
 
 	    if (splitted.size() < 3) {
 	        for (auto& key : keys) {
-	            printf("  %i: %s\n", key, buffer[key].c_str());
+            	printf("  %i: ", key);
+            	for (auto& ch : buffer[key]) {
+            		switch (ch) {
+            			case '\t': {
+            				for (int i = 0; i < tabSize; ++i) {
+            					putchar(' ');
+            				}
+            			}
+            			default: {
+                			putchar(ch);
+                		}
+                	}
+                }
+                putchar('\n');
 	        }
 	    }
 	    else {
@@ -142,7 +157,20 @@ void Editor::Run(std::string input) {
 
 	        for (auto& key : keys) {
 	            if ((key >= begin) && (key <= end)) {
-	                printf("  %i: %s\n", key, buffer[key].c_str());
+	            	printf("  %i: ", key);
+	            	for (auto& ch : buffer[key]) {
+	            		switch (ch) {
+	            			case '\t': {
+	            				for (int i = 0; i < tabSize; ++i) {
+	            					putchar(' ');
+	            				}
+	            			}
+	            			default: {
+	                			putchar(ch);
+	                		}
+	                	}
+	                }
+	                putchar('\n');
 	            }
 	        }
 	    }
@@ -371,6 +399,18 @@ void Editor::Run(std::string input) {
 				fprintf(stderr, "parameters must be booleans");
 			}
 		}
+	}
+	else if (Util::LowerString(splitted[0]) == "tabsize") {
+		if (splitted.size() < 2) {
+			fprintf(stderr, "1 parameter required\n");
+			return;
+		}
+		if (!Util::IsInteger(splitted[1])) {
+			fprintf(stderr, "parameter must be integer\n");
+			return;
+		}
+		tabSize = std::stoi(splitted[1]);
+		Ok();
 	}
 	else {
 	    fprintf(stderr, "unrecognised command: %s\n", splitted[0].c_str());

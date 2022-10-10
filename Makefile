@@ -27,15 +27,19 @@ endif
 CXXVER = c++17
 CXXFLAGS = \
 	-std=${CXXVER} \
-	-g \
 	-Wall \
 	-Wextra \
 	-pedantic \
 	-Wno-deprecated-declarations
 
+ifeq (${small}, on)
+CXXFLAGS += -s
+else
+CXXFLAGS += -g
+endif
 
 ifeq (${platform}, windows)
-CXXFLAGS += -static -static-libgcc -static-libstdc++ -D_WIN32_WINNT
+CXXFLAGS += -static -static-libgcc -static-libstdc++ -D_WIN32_WINNT=0x0501
 endif
 
 # rules

@@ -86,3 +86,7 @@ re-orders all lines so line numbers have an equal distance
 - `ok {true/false}`
 
 toggles printing "ok" after a command runs successfully
+
+- `tabsize [size]` (`ts`)
+
+sets tab size to size
